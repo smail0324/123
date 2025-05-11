@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED 節電計算器</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1em;
+            max-width: 600px;
+            margin: auto;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 0.5em;
+            width: 100%;
+        }
+        button {
+            padding: 0.5em 1em;
+            font-size: 1em;
+            margin-top: 1em;
+        }
+        #history {
+            margin-top: 2em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 0.5em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>LED 燈管更換節電計算器</h2>
+    <label>原本燈管瓦數: <input type="number" id="oldWatt" value="40"></label>
+    <label>LED燈管瓦數: <input type="number" id="newWatt" value="18"></label>
+    <label>每日使用時數: <input type="number" id="hours" value="8"></label>
+    <label>每月使用天數: <input type="number" id="days" value="30"></label>
+    <label>每度電價 (元): <input type="number" step="0.1" id="rate" value="2.6"></label>
+    <label>燈管數量: <input type="number" id="count" value="10"></label>
+
+    <button onclick="calculateSavings()">計算節省</button>
+
+    <h3>結果</h3>
+    <p id="result"></p>
+
+    <div id="history">
+        <h3>歷史紀錄</h3>
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>原瓦數</th>
+                    <th>LED瓦數</th>
+                    <th>度數</th>
+                    <th>費用 (元)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        function calculateSavings() {
+            const oldWatt = parseFloat(document.getElementById('oldWatt').value);
+            const newWatt = parseFloat(document.getElementById('newWatt').value);
+            const hours = parseFloat(document.getElementById('hours').value);
+            const days = parseFloat(document.getElementById('days').value);
+            const rate = parseFloat(document.getElementById('rate').value);
+            const count = parseFloat(document.getElementById('count').value);
+
+            const savedWatt = (oldWatt - newWatt) * hours * days * count / 1000; // kWh
+            const savedCost = savedWatt * rate;
+
+            document.getElementById('result').innerText =
+                `每月節省電量：${savedWatt.toFixed(2)} 度電\n每月節省電費：${savedCost.toFixed(2)} 元`;
+
+            const tbody = document.getElementById('historyTable').querySelector('tbody');
+            const newRow = tbody.insertRow();
+            newRow.innerHTML = `<td>${oldWatt}</td><td>${newWatt}</td><td>${savedWatt.toFixed(2)}</td><td>${savedCost.toFixed(2)}</td>`;
+        }
+    </script>
+</body>
+</html>
