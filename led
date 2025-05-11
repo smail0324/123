@@ -1,0 +1,18 @@
+def calculate_savings(old_watt, new_watt, hours_per_day, days_per_month, electricity_rate, tube_count):
+    saved_watt_per_tube = old_watt - new_watt
+    total_saved_kwh = saved_watt_per_tube * hours_per_day * days_per_month * tube_count / 1000
+    saved_cost = total_saved_kwh * electricity_rate
+
+    print(f"每月節省電量：{total_saved_kwh:.2f} 度電")
+    print(f"每月節省電費：{saved_cost:.2f} 元")
+    return total_saved_kwh, saved_cost
+
+# 範例參數
+calculate_savings(
+    old_watt=40,           # 原本燈管瓦數
+    new_watt=18,           # LED燈管瓦數
+    hours_per_day=8,       # 每日使用時數
+    days_per_month=30,     # 每月使用天數
+    electricity_rate=2.6,  # 每度電費
+    tube_count=10          # 燈管數量
+)
